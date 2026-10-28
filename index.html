@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тёплый Пар — спешелти-обжарочная зёрен</title>
+  <meta name="description" content="Тёплый Пар — спешелти-обжарочная в центре города. Обжариваем зелёное зерно малыми партиями под заказ и пишем профиль каждой обжарки, чтобы любимый вкус повторялся из пачки в пачку.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <style>
+/* =========================================================
+   Тёплый Пар — спешелти-обжарочная
+   Дизайн-токены + вёрстка лендинга. Чистый CSS, без фреймворков.
+   ========================================================= */
+
+/* ---------- Дизайн-токены ---------- */
+:root {
+  /* Цвета: кофейная база, тёплая бумага, медовый акцент, оливковый */
+  --ink:        #231712; /* эспрессо, тёмный фон и основной текст */
+  --ink-2:      #3a2820; /* тёплый коричневый для тёмных поверхностей */
+  --ink-3:      #5b463c; /* приглушённый коричневый, вторичный текст */
+  --paper:      #fbf7f0; /* тёплый почти-белый, базовый фон */
+  --sand:       #f0e7d8; /* песочный для карточек и чередующихся секций */
+  --sand-line:  #e4d8c4; /* бордеры на светлом */
+  --amber:      #d9922a; /* медовый акцент */
+  --amber-deep: #b8771b; /* акцент для текста/hover на светлом */
+  --olive:      #5c6a4c; /* второй акцент, используем сдержанно */
+  --cream:      #f6efe3; /* текст на тёмном */
+  --cream-dim:  #cbb9a6; /* вторичный текст на тёмном */
+
+  /* Типографика */
+  --font-display: "Spectral", Georgia, "Times New Roman", serif;
+  --font-body:    "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --step--1: clamp(0.82rem, 0.8rem + 0.1vw, 0.9rem);
+  --step-0:  clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --step-1:  clamp(1.2rem, 1.12rem + 0.4vw, 1.35rem);
+  --step-2:  clamp(1.45rem, 1.3rem + 0.75vw, 1.85rem);
+  --step-3:  clamp(1.9rem, 1.6rem + 1.4vw, 2.6rem);
+  --step-4:  clamp(2.4rem, 1.9rem + 2.5vw, 3.8rem);
+
+  /* Отступы (шкала 4px) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* Радиусы */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+
+  /* Тени */
+  --shadow-sm: 0 2px 8px rgba(35, 23, 18, 0.06);
+  --shadow-md: 0 14px 34px rgba(35, 23, 18, 0.12);
+  --shadow-lg: 0 28px 60px rgba(35, 23, 18, 0.22);
+
+  --maxw: 1200px;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* ---------- Сброс и база ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font: inherit; cursor: pointer; }
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.12; }
+
+ul, ol { list-style: none; padding: 0; }
+
+:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute; left: var(--space-4); top: -100%;
+  z-index: 100; background: var(--ink); color: var(--cream);
+  padding: var(--space-2) var(--space-4); border-radius: var(--r-sm);
+  transition: top 0.2s var(--ease);
+}
+.skip-link:focus { top: var(--space-4); }
+
+/* ---------- Контейнер и секции ---------- */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+}
+
+.section { padding-block: clamp(3.5rem, 2.5rem + 4vw, 6.5rem); }
+
+.section__head {
+  max-width: 62ch;
+  margin-bottom: var(--space-7);
+}
+
+.section__title {
+  font-size: var(--step-3);
+  letter-spacing: -0.015em;
+}
+
+.section__intro {
+  margin-top: var(--space-4);
+  color: var(--ink-3);
+  font-size: var(--step-1);
+  line-height: 1.55;
+}
+
+/* ---------- Кнопки ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.8em 1.5em;
+  border: 1.5px solid transparent;
+  border-radius: var(--r-pill);
+  font-weight: 600;
+  font-size: var(--step-0);
+  letter-spacing: 0.01em;
+  transition: transform 0.18s var(--ease), background-color 0.18s var(--ease), color 0.18s var(--ease), border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.btn--sm { padding: 0.6em 1.15em; font-size: var(--step--1); }
+
+.btn--solid {
+  background: var(--amber);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+.btn--solid:hover { background: var(--amber-deep); color: var(--cream); transform: translateY(-2px); }
+
+.btn--ghost {
+  background: transparent;
+  color: currentColor;
+  border-color: currentColor;
+}
+.btn--ghost:hover { background: currentColor; transform: translateY(-2px); }
+.hero .btn--ghost:hover { color: var(--ink); }
+
+/* ---------- Бренд ---------- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+}
+.brand__mark {
+  display: grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  color: var(--amber);
+  background: rgba(217, 146, 42, 0.14);
+  border-radius: var(--r-pill);
+}
+
+/* ---------- Шапка ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(251, 247, 240, 0.86);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--sand-line);
+}
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  min-height: 72px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+.nav__link {
+  position: relative;
+  font-weight: 500;
+  color: var(--ink-3);
+  padding-block: var(--space-2);
+  transition: color 0.18s var(--ease);
+}
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 2px;
+  background: var(--amber);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s var(--ease);
+}
+.nav__link:hover { color: var(--ink); }
+.nav__link:hover::after { transform: scaleX(1); }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  width: 44px; height: 44px;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--sand-line);
+  border-radius: var(--r-sm);
+}
+.nav-toggle__bar {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.22s var(--ease), opacity 0.22s var(--ease);
+}
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ---------- Герой ---------- */
+.hero {
+  position: relative;
+  background: radial-gradient(120% 120% at 85% 0%, var(--ink-2) 0%, var(--ink) 55%);
+  color: var(--cream);
+  padding-block: clamp(3rem, 2rem + 6vw, 6rem) clamp(4rem, 3rem + 6vw, 7rem);
+  overflow: hidden;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -40% auto;
+  width: 60%; height: 80%;
+  background: radial-gradient(circle, rgba(217, 146, 42, 0.16), transparent 68%);
+  pointer-events: none;
+}
+.hero__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: center;
+}
+.hero__kicker {
+  display: inline-block;
+  color: var(--amber);
+  font-weight: 600;
+  font-size: var(--step--1);
+  letter-spacing: 0.02em;
+  margin-bottom: var(--space-4);
+}
+.hero__title {
+  font-size: var(--step-4);
+  letter-spacing: -0.02em;
+  max-width: 15ch;
+}
+.hero__lead {
+  margin-top: var(--space-5);
+  max-width: 52ch;
+  color: var(--cream-dim);
+  font-size: var(--step-1);
+  line-height: 1.6;
+}
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+.hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-7);
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(246, 239, 227, 0.16);
+}
+.hero__stat dt {
+  color: var(--cream-dim);
+  font-size: var(--step--1);
+}
+.hero__stat dd {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  color: var(--cream);
+  margin-top: var(--space-1);
+}
+
+/* Герой — медиа */
+.hero__media {
+  position: relative;
+}
+.hero__photo {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.hero__photo img {
+  width: 100%;
+  height: clamp(360px, 42vw, 560px);
+  object-fit: cover;
+}
+
+/* Фирменная карточка профиля обжарки */
+.roast-card {
+  position: absolute;
+  left: clamp(-0.5rem, -2vw, -2rem);
+  bottom: clamp(-1rem, -2vw, -2.2rem);
+  width: min(320px, 82%);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-lg);
+}
+.roast-card__head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: var(--space-3);
+}
+.roast-card__origin { font-weight: 700; font-size: var(--step-0); }
+.roast-card__level { color: var(--amber-deep); font-size: var(--step--1); font-weight: 600; }
+.roast-card__chart {
+  width: 100%;
+  height: auto;
+  color: var(--amber-deep);
+  display: block;
+}
+.roast-card__data {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--sand-line);
+}
+.roast-card__data dt { color: var(--ink-3); font-size: 0.72rem; }
+.roast-card__data dd { font-family: var(--font-display); font-weight: 600; font-size: var(--step-0); }
+
+/* ---------- Преимущества ---------- */
+.features { background: var(--paper); }
+.features__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--space-5);
+}
+.feature {
+  padding: var(--space-6);
+  background: var(--sand);
+  border: 1px solid var(--sand-line);
+  border-radius: var(--r-md);
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.feature:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.feature__icon {
+  display: grid;
+  place-items: center;
+  width: 54px; height: 54px;
+  color: var(--ink);
+  background: var(--paper);
+  border-radius: var(--r-sm);
+  margin-bottom: var(--space-4);
+}
+.feature__icon svg { width: 30px; height: 30px; }
+.feature__title { font-size: var(--step-1); margin-bottom: var(--space-2); }
+.feature__text { color: var(--ink-3); font-size: var(--step-0); line-height: 1.55; }
+
+/* ---------- Каталог ---------- */
+.catalog { background: var(--sand); }
+.catalog__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--space-5);
+}
+.product {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border: 1px solid var(--sand-line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.product:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.product__media { aspect-ratio: 4 / 3; overflow: hidden; background: var(--sand); }
+.product__media img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s var(--ease);
+}
+.product:hover .product__media img { transform: scale(1.05); }
+.product__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  flex: 1;
+}
+.product__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.product__name { font-size: var(--step-1); }
+.product__origin { color: var(--olive); font-size: var(--step--1); font-weight: 600; }
+.product__notes { color: var(--ink-3); font-size: var(--step-0); flex: 1; }
+.product__buy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+.product__price { font-family: var(--font-display); font-weight: 600; font-size: var(--step-2); }
+
+/* Индикатор уровня обжарки */
+.roast-dot {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--ink-3);
+  flex: none;
+  vertical-align: middle;
+}
+.roast-dot--light  { background: #e7c79a; }
+.roast-dot--medium { background: #b5793f; }
+.roast-dot--dark   { background: #4a2d1e; }
+
+.catalog__legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-6);
+  color: var(--ink-3);
+  font-size: var(--step--1);
+}
+.catalog__legend .roast-dot { margin-left: var(--space-3); }
+.catalog__legend .roast-dot:first-child { margin-left: 0; }
+
+/* ---------- Как мы обжариваем ---------- */
+.roasting { background: var(--paper); }
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-6);
+  counter-reset: none;
+}
+.step {
+  position: relative;
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--sand-line);
+}
+.step__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px; height: 46px;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 600;
+  color: var(--amber-deep);
+  background: var(--sand);
+  border-radius: var(--r-pill);
+  margin-bottom: var(--space-4);
+}
+.step__title { font-size: var(--step-1); margin-bottom: var(--space-2); }
+.step__text { color: var(--ink-3); font-size: var(--step-0); line-height: 1.55; }
+
+/* ---------- Отзывы ---------- */
+.reviews { background: var(--ink); color: var(--cream); }
+.reviews .section__title { color: var(--cream); }
+.reviews__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-5);
+}
+.review {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  background: var(--ink-2);
+  border: 1px solid rgba(246, 239, 227, 0.1);
+  border-radius: var(--r-md);
+}
+.review__quote {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.5;
+  font-style: italic;
+}
+.review__quote::before { content: "«"; color: var(--amber); }
+.review__quote::after  { content: "»"; color: var(--amber); }
+.review__author {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--step--1);
+  color: var(--cream-dim);
+}
+.review__author strong { color: var(--cream); font-size: var(--step-0); }
+.review__avatar {
+  width: 48px; height: 48px;
+  border-radius: var(--r-pill);
+  object-fit: cover;
+  border: 2px solid var(--amber);
+}
+
+/* ---------- Подписка ---------- */
+.subscribe { background: var(--sand); }
+.subscribe__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 1rem + 4vw, 4rem);
+  align-items: center;
+  padding: clamp(2.2rem, 1.5rem + 3vw, 3.5rem);
+  background:
+    radial-gradient(90% 140% at 100% 0%, rgba(217, 146, 42, 0.12), transparent 60%),
+    var(--paper);
+  border: 1px solid var(--sand-line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+.subscribe__title { font-size: var(--step-3); letter-spacing: -0.015em; max-width: 16ch; }
+.subscribe__text { margin-top: var(--space-4); color: var(--ink-3); font-size: var(--step-1); }
+.subscribe__label { display: block; font-weight: 600; font-size: var(--step--1); margin-bottom: var(--space-2); }
+.subscribe__row { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+.subscribe__input {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 0.85em 1.1em;
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1.5px solid var(--sand-line);
+  border-radius: var(--r-pill);
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.subscribe__input::placeholder { color: var(--ink-3); opacity: 0.7; }
+.subscribe__input:focus-visible {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(217, 146, 42, 0.25);
+}
+.subscribe__input[aria-invalid="true"] {
+  border-color: #b23b2e;
+  box-shadow: 0 0 0 3px rgba(178, 59, 46, 0.2);
+}
+.subscribe__hint { margin-top: var(--space-3); font-size: var(--step--1); color: var(--ink-3); }
+.subscribe__hint[data-state="error"] { color: #b23b2e; }
+.subscribe__hint[data-state="ok"] { color: var(--olive); font-weight: 600; }
+
+/* ---------- Футер ---------- */
+.site-footer { background: var(--ink); color: var(--cream-dim); padding-block: var(--space-8) var(--space-6); }
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+  gap: var(--space-6);
+}
+.brand--footer { color: var(--cream); font-size: 1.2rem; }
+.site-footer__tagline { margin-top: var(--space-4); max-width: 34ch; font-size: var(--step--1); line-height: 1.6; }
+.site-footer__heading {
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--step-0);
+  margin-bottom: var(--space-4);
+}
+.site-footer__col ul { display: flex; flex-direction: column; gap: var(--space-3); }
+.site-footer__col a { color: var(--cream-dim); font-size: var(--step--1); transition: color 0.18s var(--ease); }
+.site-footer__col a:hover { color: var(--amber); }
+.site-footer__contacts { font-style: normal; font-size: var(--step--1); line-height: 1.9; }
+.site-footer__contacts a:hover { color: var(--amber); }
+
+.social { display: flex; gap: var(--space-3); margin-top: var(--space-5); }
+.social__link {
+  display: grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  color: var(--cream);
+  border: 1px solid rgba(246, 239, 227, 0.2);
+  border-radius: var(--r-pill);
+  transition: background-color 0.18s var(--ease), color 0.18s var(--ease), transform 0.18s var(--ease);
+}
+.social__link:hover { background: var(--amber); color: var(--ink); transform: translateY(-2px); }
+
+.site-footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(246, 239, 227, 0.14);
+  font-size: var(--step--1);
+}
+
+/* =========================================================
+   Адаптивность
+   ========================================================= */
+@media (max-width: 900px) {
+  .hero__grid { grid-template-columns: 1fr; }
+  .hero__media { margin-top: var(--space-6); }
+  .hero__photo img { height: clamp(320px, 60vw, 460px); }
+  .roast-card { left: auto; right: var(--space-4); }
+  .subscribe__inner { grid-template-columns: 1fr; }
+  .site-footer__grid { grid-template-columns: 1fr 1fr; gap: var(--space-7) var(--space-6); }
+  .site-footer__brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 760px) {
+  .nav {
+    position: fixed;
+    inset: 72px 0 auto 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--paper);
+    border-bottom: 1px solid var(--sand-line);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-120%);
+    transition: transform 0.28s var(--ease);
+  }
+  .nav.is-open { transform: translateY(0); }
+  .nav__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .nav__link { display: block; padding: var(--space-3) 0; border-bottom: 1px solid var(--sand-line); }
+  .nav__link::after { display: none; }
+  .nav__cta { margin-top: var(--space-3); align-self: flex-start; }
+  .nav-toggle { display: flex; }
+}
+
+@media (max-width: 560px) {
+  .hero__stats { gap: var(--space-5); }
+  .site-footer__grid { grid-template-columns: 1fr; }
+  .site-footer__bottom { flex-direction: column; }
+  .roast-card { width: min(300px, 90%); }
+}
+
+/* =========================================================
+   Анимация появления кривой + уважение к reduce-motion
+   ========================================================= */
+.roast-card__curve {
+  stroke-dasharray: 360;
+  stroke-dashoffset: 360;
+  animation: draw-curve 1.4s var(--ease) 0.3s forwards;
+}
+.roast-card__crack { opacity: 0; animation: fade-in 0.6s ease 1.5s forwards; }
+
+@keyframes draw-curve { to { stroke-dashoffset: 0; } }
+@keyframes fade-in { to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .roast-card__curve { stroke-dashoffset: 0; }
+  .roast-card__crack { opacity: 1; }
+}
+
+  </style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">К основному содержанию</a>
+
+  <!-- ============ ШАПКА ============ -->
+  <header class="site-header" id="top">
+    <div class="container site-header__inner">
+      <a class="brand" href="#top" aria-label="Тёплый Пар — на главную">
+        <span class="brand__mark" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+            <path d="M8 23c0-3 2-4 2-6s-2-3-2-6 2-4 2-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M14 23c0-3 2-4 2-6s-2-3-2-6 2-4 2-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand__name">Тёплый&nbsp;Пар</span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Основная навигация">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#catalog">Кофе</a></li>
+          <li><a class="nav__link" href="#roasting">Обжарка</a></li>
+          <li><a class="nav__link" href="#subscribe">Подписка</a></li>
+          <li><a class="nav__link" href="#reviews">Отзывы</a></li>
+        </ul>
+        <a class="btn btn--solid nav__cta" href="#catalog">Выбрать кофе</a>
+      </nav>
+
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="nav" aria-label="Открыть меню">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ ГЕРОЙ ============ -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="hero__kicker">Спешелти-обжарочная в центре города</p>
+          <h1 class="hero__title" id="hero-title">Кофе, обжаренный под ваш вкус и записанный до градуса</h1>
+          <p class="hero__lead">Берём зелёное зерно с конкретных ферм, обжариваем малыми партиями на барабанном ростере и фиксируем профиль каждой обжарки. Так любимый вкус повторяется из пачки в пачку.</p>
+          <div class="hero__actions">
+            <a class="btn btn--solid" href="#catalog">Выбрать кофе</a>
+            <a class="btn btn--ghost" href="#roasting">Как мы обжариваем</a>
+          </div>
+          <dl class="hero__stats">
+            <div class="hero__stat">
+              <dt>партии в день</dt>
+              <dd>12&nbsp;кг</dd>
+            </div>
+            <div class="hero__stat">
+              <dt>от обжарки до пачки</dt>
+              <dd>48&nbsp;ч</dd>
+            </div>
+            <div class="hero__stat">
+              <dt>сортов в ротации</dt>
+              <dd>14</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="hero__media">
+          <figure class="hero__photo">
+            <img src="https://picsum.photos/seed/warmsteam-roaster/900/1100" width="900" height="1100"
+                 alt="Бариста засыпает свежеобжаренные зёрна в барабанный ростер">
+          </figure>
+
+          <!-- Фирменная деталь: карточка профиля обжарки -->
+          <figure class="roast-card" aria-label="Профиль обжарки эфиопского лота">
+            <figcaption class="roast-card__head">
+              <span class="roast-card__origin">Эфиопия · Иргачеффе</span>
+              <span class="roast-card__level">Светлая обжарка</span>
+            </figcaption>
+
+            <svg class="roast-card__chart" viewBox="0 0 260 120" role="img" aria-label="Кривая обжарки: температура зерна растёт от 92 до 196 градусов за одиннадцать минут, первый кряк на девятой минуте">
+              <g class="roast-card__grid" stroke="currentColor" stroke-width="0.5" opacity="0.28">
+                <line x1="0" y1="30" x2="260" y2="30"/>
+                <line x1="0" y1="60" x2="260" y2="60"/>
+                <line x1="0" y1="90" x2="260" y2="90"/>
+              </g>
+              <path class="roast-card__curve" d="M4 104 C 34 112, 46 92, 70 78 C 96 63, 128 52, 168 40 C 200 31, 228 24, 256 18"
+                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+              <g class="roast-card__crack">
+                <line x1="176" y1="6" x2="176" y2="114" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+                <circle cx="176" cy="38" r="3.5" fill="currentColor"/>
+              </g>
+            </svg>
+
+            <dl class="roast-card__data">
+              <div><dt>Пик</dt><dd>196&nbsp;°C</dd></div>
+              <div><dt>Развитие</dt><dd>1:45</dd></div>
+              <div><dt>1-й кряк</dt><dd>9:10</dd></div>
+            </dl>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ПРЕИМУЩЕСТВА ============ -->
+    <section class="features section" aria-labelledby="features-title">
+      <div class="container">
+        <header class="section__head">
+          <h2 class="section__title" id="features-title">Почему наш кофе пьют каждый день</h2>
+          <p class="section__intro">Мы не перепродаём чужие зёрна. Весь путь — от зелёного лота до пачки с клапаном — проходит в нашей обжарочной, и каждый шаг мы можем показать.</p>
+        </header>
+
+        <ul class="features__grid">
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="18" height="14" rx="3"/>
+                <circle cx="13" cy="18" r="4"/>
+                <path d="M22 15h3a4 4 0 0 1 0 8h-3"/>
+                <path d="M9 11V8M15 11V7"/>
+              </svg>
+            </span>
+            <h3 class="feature__title">Собственная обжарочная</h3>
+            <p class="feature__text">Барабанный ростер Probat и живой огонь. Обжариваем каждое утро партиями по 12&nbsp;кг — ровно столько, сколько успеваем продать свежим.</p>
+          </li>
+
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 4c3 4 5 6 5 10a5 5 0 0 1-10 0c0-4 2-6 5-10Z"/>
+                <path d="M8 20c0 5 3.6 8 8 8s8-3 8-8"/>
+              </svg>
+            </span>
+            <h3 class="feature__title">Обжарка под заказ</h3>
+            <p class="feature__text">Пакуем в течение 48&nbsp;часов после обжарки. На каждой пачке — дата: вы всегда знаете, сколько зерну дней, а не просто «годен до».</p>
+          </li>
+
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 26h22"/>
+                <path d="M6 22c5-1 7-11 12-12 3-0.6 5 2 9 1"/>
+                <circle cx="18" cy="10" r="1.6" fill="currentColor" stroke="none"/>
+              </svg>
+            </span>
+            <h3 class="feature__title">Контроль по данным</h3>
+            <p class="feature__text">Для каждой обжарки пишем профиль: температуру, время развития, дегазацию. Повторяемый вкус в каждой пачке — это не магия, а логи.</p>
+          </li>
+
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M26 7v6h-6"/>
+                <path d="M26 13A11 11 0 1 0 24 22"/>
+              </svg>
+            </span>
+            <h3 class="feature__title">Подписка без хлопот</h3>
+            <p class="feature__text">Присылаем свежие зёрна на ваш вкус — раз в неделю или раз в месяц. Поставить на паузу или сменить сорт можно в один клик.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ КАТАЛОГ ============ -->
+    <section class="catalog section" id="catalog" aria-labelledby="catalog-title">
+      <div class="container">
+        <header class="section__head">
+          <h2 class="section__title" id="catalog-title">Что сейчас в ротации</h2>
+          <p class="section__intro">Шесть лотов, которые разбирают быстрее всего. Цена указана за пачку 250&nbsp;г цельного зерна; помол подберём под ваш способ заваривания.</p>
+        </header>
+
+        <ul class="catalog__grid">
+          <li class="product">
+            <div class="product__media">
+              <img src="https://picsum.photos/seed/warmsteam-ethiopia/640/640" width="640" height="640"
+                   alt="Пачка кофе Эфиопия Иргачеффе на деревянном столе">
+            </div>
+            <div class="product__body">
+              <div class="product__top">
+                <h3 class="product__name">Эфиопия Иргачеффе</h3>
+                <span class="roast-dot roast-dot--light" title="Светлая обжарка" aria-label="Обжарка: светлая"></span>
+              </div>
+              <p class="product__origin">Промытая · ферма Коне · 2050&nbsp;м</p>
+              <p class="product__notes">Жасмин, бергамот, чёрный чай. Воздушная фильтр-классика.</p>
+              <div class="product__buy">
+                <span class="product__price">890&nbsp;₽</span>
+                <button class="btn btn--solid btn--sm" type="button">В корзину</button>
+              </div>
+            </div>
+          </li>
+
+          <li class="product">
+            <div class="product__media">
+              <img src="https://picsum.photos/seed/warmsteam-colombia/640/640" width="640" height="640"
+                   alt="Пачка кофе Колумбия Уила">
+            </div>
+            <div class="product__body">
+              <div class="product__top">
+                <h3 class="product__name">Колумбия Уила</h3>
+                <span class="roast-dot roast-dot--medium" title="Средняя обжарка" aria-label="Обжарка: средняя"></span>
+              </div>
+              <p class="product__origin">Промытая · кооператив Питалито · 1750&nbsp;м</p>
+              <p class="product__notes">Молочный шоколад, карамель, красное яблоко. Для фильтра и молочных напитков.</p>
+              <div class="product__buy">
+                <span class="product__price">790&nbsp;₽</span>
+                <button class="btn btn--solid btn--sm" type="button">В корзину</button>
+              </div>
+            </div>
+          </li>
+
+          <li class="product">
+            <div class="product__media">
+              <img src="https://picsum.photos/seed/warmsteam-brazil/640/640" width="640" height="640"
+                   alt="Пачка кофе Бразилия Можиана">
+            </div>
+            <div class="product__body">
+              <div class="product__top">
+                <h3 class="product__name">Бразилия Можиана</h3>
+                <span class="roast-dot roast-dot--dark" title="Тёмная обжарка" aria-label="Обжарка: тёмная"></span>
+              </div>
+              <p class="product__origin">Натуральная · регион Можиана · 1100&nbsp;м</p>
+              <p class="product__notes">Фундук, какао, ваниль. Плотный эспрессо с густой пенкой.</p>
+              <div class="product__buy">
+                <span class="product__price">690&nbsp;₽</span>
+                <button class="btn btn--solid btn--sm" type="button">В корзину</button>
+              </div>
+            </div>
+          </li>
+
+          <li class="product">
+            <div class="product__media">
+              <img src="https://picsum.photos/seed/warmsteam-kenya/640/640" width="640" height="640"
+                   alt="Пачка кофе Кения Ньери AA">
+            </div>
+            <div class="product__body">
+              <div class="product__top">
+                <h3 class="product__name">Кения Ньери AA</h3>
+                <span class="roast-dot roast-dot--light" title="Светло-средняя обжарка" aria-label="Обжарка: светло-средняя"></span>
+              </div>
+              <p class="product__origin">Промытая · станция Ньери · 1900&nbsp;м</p>
+              <p class="product__notes">Чёрная смородина, томат, тростниковый сахар. Яркая сочная кислотность.</p>
+              <div class="product__buy">
+                <span class="product__price">940&nbsp;₽</span>
+                <button class="btn btn--solid btn--sm" type="button">В корзину</button>
+              </div>
+            </div>
+          </li>
+
+          <li class="product">
+            <div class="product__media">
+              <img src="https://picsum.photos/seed/warmsteam-guatemala/640/640" width="640" height="640"
+                   alt="Пачка кофе Гватемала Антигуа">
+            </div>
+            <div class="product__body">
+              <div class="product__top">
+                <h3 class="product__name">Гватемала Антигуа</h3>
+                <span class="roast-dot roast-dot--medium" title="Средняя обжарка" aria-label="Обжарка: средняя"></span>
+              </div>
+              <p class="product__origin">Промытая · долина Антигуа · 1600&nbsp;м</p>
+              <p class="product__notes">Тёмный шоколад, специи, апельсиновая цедра. Универсальный баланс.</p>
+              <div class="product__buy">
+                <span class="product__price">820&nbsp;₽</span>
+                <button class="btn btn--solid btn--sm" type="button">В корзину</button>
+              </div>
+            </div>
+          </li>
+
+          <li class="product">
+            <div class="product__media">
+              <img src="https://picsum.photos/seed/warmsteam-rwanda/640/640" width="640" height="640"
+                   alt="Пачка кофе Руанда Кивуру">
+            </div>
+            <div class="product__body">
+              <div class="product__top">
+                <h3 class="product__name">Руанда Кивуру</h3>
+                <span class="roast-dot roast-dot--light" title="Светлая обжарка" aria-label="Обжарка: светлая"></span>
+              </div>
+              <p class="product__origin">Промытая · холмы Кивуру · 1850&nbsp;м</p>
+              <p class="product__notes">Красные ягоды, лайм, мёд. Чистый десертный фильтр.</p>
+              <div class="product__buy">
+                <span class="product__price">880&nbsp;₽</span>
+                <button class="btn btn--solid btn--sm" type="button">В корзину</button>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+        <p class="catalog__legend">
+          <span class="roast-dot roast-dot--light"></span> светлая
+          <span class="roast-dot roast-dot--medium"></span> средняя
+          <span class="roast-dot roast-dot--dark"></span> тёмная
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ КАК МЫ ОБЖАРИВАЕМ ============ -->
+    <section class="roasting section" id="roasting" aria-labelledby="roasting-title">
+      <div class="container">
+        <header class="section__head">
+          <h2 class="section__title" id="roasting-title">Как зелёное зерно становится вашей чашкой</h2>
+          <p class="section__intro">Четыре шага, которые проходит каждый лот. Это настоящая последовательность, поэтому мы её и нумеруем — и на каждой пачке печатаем, когда она была пройдена.</p>
+        </header>
+
+        <ol class="steps">
+          <li class="step">
+            <span class="step__num">1</span>
+            <h3 class="step__title">Отбираем зелёное зерно</h3>
+            <p class="step__text">Пробуем образцы с ферм напрямую и берём только лоты с каппинг-оценкой 86+. Знаем регион, высоту и способ обработки каждого.</p>
+          </li>
+          <li class="step">
+            <span class="step__num">2</span>
+            <h3 class="step__title">Строим профиль</h3>
+            <p class="step__text">Делаем тест-обжарки и каппинг, подбираем кривую под сорт и фиксируем её: температура входа, время развития, точка первого кряка.</p>
+          </li>
+          <li class="step">
+            <span class="step__num">3</span>
+            <h3 class="step__title">Обжариваем партию</h3>
+            <p class="step__text">Повторяем профиль на барабанном ростере с ручным контролем огня. Пишем лог температуры секунда в секунду — вкус не зависит от настроения.</p>
+          </li>
+          <li class="step">
+            <span class="step__num">4</span>
+            <h3 class="step__title">Отдыхаем и пакуем</h3>
+            <p class="step__text">Даём зерну дегазироваться 3–5 дней, затем пакуем в пакет с клапаном и ставим дату обжарки. Так аромат доедет до вас целым.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ ОТЗЫВЫ ============ -->
+    <section class="reviews section" id="reviews" aria-labelledby="reviews-title">
+      <div class="container">
+        <header class="section__head">
+          <h2 class="section__title" id="reviews-title">Говорят те, кто заваривает каждый день</h2>
+        </header>
+
+        <ul class="reviews__grid">
+          <li class="review">
+            <blockquote class="review__quote">Беру «Иргачеффе» уже полгода — и каждый раз та же чистая жасминовая кислотность. Для меня это и есть спешелти: предсказуемо вкусно.</blockquote>
+            <figcaption class="review__author">
+              <img class="review__avatar" src="https://picsum.photos/seed/warmsteam-marina/96/96" width="96" height="96" alt="">
+              <span><strong>Марина</strong><br>бариста</span>
+            </figcaption>
+          </li>
+          <li class="review">
+            <blockquote class="review__quote">Подписка спасла моё утро: свежие зёрна приезжают раньше, чем заканчивается прошлая пачка. Ни дня без нормального фильтра.</blockquote>
+            <figcaption class="review__author">
+              <img class="review__avatar" src="https://picsum.photos/seed/warmsteam-anton/96/96" width="96" height="96" alt="">
+              <span><strong>Антон</strong><br>разработчик</span>
+            </figcaption>
+          </li>
+          <li class="review">
+            <blockquote class="review__quote">Заказывал на свою кофейню — ребята помогли собрать профиль под нашу эспрессо-машину. Гости стали возвращаться за кофе, а не только за десертами.</blockquote>
+            <figcaption class="review__author">
+              <img class="review__avatar" src="https://picsum.photos/seed/warmsteam-sergey/96/96" width="96" height="96" alt="">
+              <span><strong>Сергей</strong><br>владелец кофейни</span>
+            </figcaption>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ ПОДПИСКА / CTA ============ -->
+    <section class="subscribe section" id="subscribe" aria-labelledby="subscribe-title">
+      <div class="container subscribe__inner">
+        <div class="subscribe__copy">
+          <h2 class="subscribe__title" id="subscribe-title">Свежая обжарка — каждую неделю у двери</h2>
+          <p class="subscribe__text">Оставьте почту, и мы предложим сорт под ваш способ заваривания. Первая доставка — бесплатно, отменить подписку можно в любой момент.</p>
+        </div>
+
+        <form class="subscribe__form" id="subscribeForm" novalidate>
+          <label class="subscribe__label" for="email">Электронная почта</label>
+          <div class="subscribe__row">
+            <input class="subscribe__input" id="email" name="email" type="email"
+                   inputmode="email" autocomplete="email" placeholder="you@example.com" required>
+            <button class="btn btn--solid" type="submit">Оформить подписку</button>
+          </div>
+          <p class="subscribe__hint" id="formHint" role="status" aria-live="polite">Присылаем кофе и письма про обжарку. Без спама.</p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ ФУТЕР ============ -->
+  <footer class="site-footer" aria-labelledby="footer-title">
+    <h2 class="visually-hidden" id="footer-title">Подвал сайта</h2>
+    <div class="container site-footer__grid">
+
+      <div class="site-footer__brand">
+        <a class="brand brand--footer" href="#top" aria-label="Тёплый Пар — на главную">
+          <span class="brand__mark" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
+              <path d="M8 23c0-3 2-4 2-6s-2-3-2-6 2-4 2-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M14 23c0-3 2-4 2-6s-2-3-2-6 2-4 2-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="brand__name">Тёплый&nbsp;Пар</span>
+        </a>
+        <p class="site-footer__tagline">Спешелти-обжарочная. Обжариваем малыми партиями и пишем профиль каждой обжарки.</p>
+        <ul class="social" aria-label="Мы в соцсетях">
+          <li>
+            <a class="social__link" href="#" aria-label="Telegram">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 4 3 11l5 2 2 6 3-4 5 3 3-14Z"/>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a class="social__link" href="#" aria-label="ВКонтакте">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 8c1 5 4 8 8 8h1v-3c1 0 2 1 3 3h3c-1-3-3-4-3-4s2-2 3-5h-3c-1 2-2 3-3 4V8H9v4C7 11 6 9 6 8H4Z"/>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a class="social__link" href="#" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="6" width="18" height="12" rx="3"/>
+                <path d="M11 9.5 15 12l-4 2.5Z" fill="currentColor"/>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Кофе">
+        <h3 class="site-footer__heading">Кофе</h3>
+        <ul>
+          <li><a href="#catalog">Каталог</a></li>
+          <li><a href="#subscribe">Подписка</a></li>
+          <li><a href="#catalog">Опт для кофеен</a></li>
+          <li><a href="#catalog">Подарочные наборы</a></li>
+        </ul>
+      </nav>
+
+      <nav class="site-footer__col" aria-label="Компания">
+        <h3 class="site-footer__heading">Компания</h3>
+        <ul>
+          <li><a href="#roasting">Как мы обжариваем</a></li>
+          <li><a href="#features">О нас</a></li>
+          <li><a href="#reviews">Отзывы</a></li>
+          <li><a href="#subscribe">Доставка и оплата</a></li>
+        </ul>
+      </nav>
+
+      <div class="site-footer__col">
+        <h3 class="site-footer__heading">Контакты</h3>
+        <address class="site-footer__contacts">
+          Москва, Большая Новодмитровская, 36<br>
+          <a href="tel:+74951234567">+7 495 123-45-67</a><br>
+          <a href="mailto:hello@teplyipar.coffee">hello@teplyipar.coffee</a><br>
+          Ежедневно 8:00–22:00
+        </address>
+      </div>
+    </div>
+
+    <div class="container site-footer__bottom">
+      <p>© <span id="year">2026</span> Тёплый Пар. Обжарено с заботой в Москве.</p>
+      <p>Учебный проект · лабораторная «Figma»</p>
+    </div>
+  </footer>
+
+</body>
+</html>
